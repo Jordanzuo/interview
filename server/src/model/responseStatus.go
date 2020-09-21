@@ -17,4 +17,7 @@ const (
 	RuntimeException     = "RuntimeException"
 	NoAvailableRoom      = "NoAvailableRoom"
 	PlayerNameNotExists  = "PlayerNameNotExists"
+	MessageIsEmpty       = "MessageIsEmpty"
+	PlayerNotInRoom      = "PlayerNotInRoom"
+	PlayerNotInValidRoom = "PlayerNotInValidRoom"
 )

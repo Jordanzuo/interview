@@ -1,3 +1,9 @@
+/*Package clientmgr ...
+This file is designed for other modules to register their endpoints to clientMgr.
+The purpose is to reduce coupling between modules.
+This package doesn't rely on any other module except for some common structs.
+Other modules that provides endpoint to client must register their endpoints to clientMgr.
+*/
 package clientmgr
 
 import (

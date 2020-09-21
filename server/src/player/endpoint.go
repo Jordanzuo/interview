@@ -59,6 +59,9 @@ func login(requestObj *model.RequestObject, clientObj clientmgr.IClient) *model.
 	// Bind clientObj and playerObj together
 	clientmgr.BindClientAndPlayer(clientObj, playerObj)
 
+	// Return room's last 50 message
+	responseObj.SetData(roomObj.GetMessageHistory())
+
 	return responseObj
 }
 

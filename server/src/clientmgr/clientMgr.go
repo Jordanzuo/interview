@@ -1,11 +1,10 @@
-/*clientMgr ...
+/*Package clientmgr ...
 In order to support multiple protocol simultaneously, such as socket, web socket, http and so on, I design this package.
 serversocket provides support for tcp protocol.
 serverwebsocket provides support for web socket protocol.
-And clientMgr provides functions to manage all the client connections no matter what the underlying protocol is.
+And clientmgr provides functions to manage all the client connections no matter what the underlying protocol is.
 All the client connections must implement the IClient interface defined in interface.go
 */
-
 package clientmgr
 
 import (

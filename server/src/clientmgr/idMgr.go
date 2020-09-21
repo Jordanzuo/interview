@@ -1,3 +1,6 @@
+/*Package clientmgr ...
+Since there maybe more than one protocol supported simultaneously. So the way to generate new client id must be centralized.
+*/
 package clientmgr
 
 import "sync/atomic"

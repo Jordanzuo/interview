@@ -16,6 +16,17 @@ func getRoomCount() int {
 	return len(roomList)
 }
 
+func getRoom(id int) (roomObj *Room, exists bool) {
+	if id < 0 || id > len(roomList)-1 {
+		return
+	}
+
+	roomObj = roomList[id]
+	exists = true
+
+	return
+}
+
 // AssignRoom ... Assign a room for a newly coming player.
 // Return values:
 // a candidate room
