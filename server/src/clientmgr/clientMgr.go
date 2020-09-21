@@ -65,12 +65,12 @@ func getClientList() (list []IClient) {
 	return
 }
 
-func getExpiredClientList() (expiredList []IClient) {
+func getExpiredClientList(clientExpireSeconds int64) (expiredList []IClient) {
 	mutex.RLock()
 	defer mutex.RUnlock()
 
 	for _, item := range clientMap {
-		if item.Expired() {
+		if item.Expired(clientExpireSeconds) {
 			expiredList = append(expiredList, item)
 		}
 	}

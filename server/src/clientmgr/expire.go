@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+const (
+	conClientExpireSeconds int64 = 30
+)
+
 func init() {
 	go clearExpiredClient()
 }
@@ -23,7 +27,7 @@ func clearExpiredClient() {
 
 		// Get expired client list and disconnect all of them
 		beforeClientCount := getClientCount()
-		expiredClientList := getExpiredClientList()
+		expiredClientList := getExpiredClientList(conClientExpireSeconds)
 		expiredClientCount := len(expiredClientList)
 		if expiredClientCount > 0 {
 			for _, item := range expiredClientList {

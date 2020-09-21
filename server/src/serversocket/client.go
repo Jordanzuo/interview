@@ -15,8 +15,7 @@ import (
 )
 
 const (
-	conHeaderLength              = 4
-	conClientExpireSeconds int64 = 300
+	conHeaderLength = 4
 )
 
 var (
@@ -27,7 +26,7 @@ var (
 type Client struct {
 	// Identifier
 	id        int64
-	requestId int64
+	requestID int64
 
 	// underlying connection
 	conn net.Conn
@@ -50,11 +49,11 @@ func (this *Client) GetID() int64 {
 }
 
 func (this *Client) GetClientRequestID() int64 {
-	return this.requestId
+	return this.requestID
 }
 
-func (this *Client) SetClientRequestID(requestId int64) {
-	this.requestId = requestId
+func (this *Client) SetClientRequestID(requestID int64) {
+	this.requestID = requestID
 }
 
 func (this *Client) GetPlayer() *playerModel.Player {
@@ -150,8 +149,8 @@ func (this *Client) Active() {
 	}
 }
 
-func (this *Client) Expired() bool {
-	return time.Now().Unix() > this.activeTime+conClientExpireSeconds
+func (this *Client) Expired(clientExpireSeconds int64) bool {
+	return time.Now().Unix() > this.activeTime+clientExpireSeconds
 }
 
 func (this *Client) Close() {

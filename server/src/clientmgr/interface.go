@@ -32,7 +32,7 @@ type IClient interface {
 	Active()
 
 	// Check if the client is expired
-	Expired() bool
+	Expired(conClientExpireSeconds int64) bool
 
 	// Close the underlying connection
 	Close()
