@@ -1,4 +1,4 @@
-/*
+/*Package dfa ...
 See Profanity Filter design.md for more information
 */
 package dfa
@@ -70,7 +70,7 @@ func (this *dfa) searcSentence(sentence string) (startIndexList, endIndexList []
 		}
 	}
 
-	// Find if there is any valid pairs which hasn't been processed.
+	// Check if there is any valid pairs which hasn't been processed.
 	if valid {
 		startIndexList = append(startIndexList, start)
 		endIndexList = append(endIndexList, end)
