@@ -19,14 +19,14 @@ func Test(t *testing.T) {
 	expectedSocketServerListenAddr := ":10001"
 	gotSocketServerListenAddr := configObj.SocketServerListenAddr
 	if expectedSocketServerListenAddr != gotSocketServerListenAddr {
-		t.Errorf("SocketServerListenAddr: Expected to get %s, but now got %s.", expectedListenAddr, gotListenAddr)
+		t.Errorf("SocketServerListenAddr: Expected to get %s, but now got %s.", expectedSocketServerListenAddr, gotSocketServerListenAddr)
 		return
 	}
 
 	expectedWebSocketServerListenAddr := ":10002"
 	gotWebSocketServerListenAddr := configObj.WebSocketServerListenAddr
 	if expectedWebSocketServerListenAddr != gotWebSocketServerListenAddr {
-		t.Errorf("WebSocketServerListenAddr: Expected to get %s, but now got %s.", expectedListenAddr, gotListenAddr)
+		t.Errorf("WebSocketServerListenAddr: Expected to get %s, but now got %s.", expectedWebSocketServerListenAddr, gotWebSocketServerListenAddr)
 		return
 	}
 
