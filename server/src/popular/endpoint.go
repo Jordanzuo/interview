@@ -16,6 +16,16 @@ func (this *PopularParameter) verify() model.ResponseStatus {
 	return model.Success
 }
 
+type PopularResponseData struct {
+	MostPopularWord string
+}
+
+func newPopularResponseData(mostPopularWord string) *PopularResponseData {
+	return &PopularResponseData{
+		MostPopularWord: mostPopularWord,
+	}
+}
+
 func popularFunc(requestObj *model.RequestObject, clientObj clientmgr.IClient, playerObj *playerModel.Player) *model.ResponseObject {
 	var responseObj = model.NewResponseObject()
 	var paramObj = new(PopularParameter)
@@ -31,7 +41,8 @@ func popularFunc(requestObj *model.RequestObject, clientObj clientmgr.IClient, p
 		return responseObj.SetResponseStatus(rs)
 	}
 
-	responseObj.SetData(mostPopularWord)
+	popularResponseDataObj := newPopularResponseData(mostPopularWord)
+	responseObj.SetData(popularResponseDataObj)
 
 	return responseObj
 }

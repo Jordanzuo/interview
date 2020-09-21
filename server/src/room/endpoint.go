@@ -35,6 +35,18 @@ func (this *SendMessageParameter) verify(playerObj *playerModel.Player) model.Re
 	return model.Success
 }
 
+type SendMessageResponseData struct {
+	PlayerName string
+	Message    string
+}
+
+func newSendMessageResponseData(playerName, message string) *SendMessageResponseData {
+	return &SendMessageResponseData{
+		PlayerName: playerName,
+		Message:    message,
+	}
+}
+
 func sendMessage(requestObj *model.RequestObject, clientObj clientmgr.IClient, playerObj *playerModel.Player) *model.ResponseObject {
 	var responseObj = model.NewResponseObject()
 	var paramObj = new(SendMessageParameter)
@@ -57,7 +69,8 @@ func sendMessage(requestObj *model.RequestObject, clientObj clientmgr.IClient, p
 
 	// Push message to all the players in the same room
 	playerList := paramObj.roomObj.GetAllPlayers()
-	clientmgr.PushMessageToPlayerList(playerList, model.SendMessage, newRoomMessage(playerObj.Name, paramObj.Message))
+	sendMessageResponseDataObj := newSendMessageResponseData(playerObj.Name, paramObj.Message)
+	clientmgr.PushMessageToPlayerList(playerList, model.SendMessage, sendMessageResponseDataObj)
 
 	return responseObj
 }

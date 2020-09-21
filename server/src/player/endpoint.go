@@ -24,6 +24,16 @@ func (this *LoginParameter) verify() model.ResponseStatus {
 	return model.Success
 }
 
+type LoginResponseData struct {
+	MessageHistoryList []*room.Message
+}
+
+func newLoginResponseData(messageHistoryList []*room.Message) *LoginResponseData {
+	return &LoginResponseData{
+		MessageHistoryList: messageHistoryList,
+	}
+}
+
 func login(requestObj *model.RequestObject, clientObj clientmgr.IClient) *model.ResponseObject {
 	var responseObj = model.NewResponseObject()
 	var paramObj = new(LoginParameter)
@@ -60,7 +70,8 @@ func login(requestObj *model.RequestObject, clientObj clientmgr.IClient) *model.
 	clientmgr.BindClientAndPlayer(clientObj, playerObj)
 
 	// Return room's last 50 message
-	responseObj.SetData(roomObj.GetMessageHistory())
+	loginResponseDataObj := newLoginResponseData(roomObj.GetMessageHistory())
+	responseObj.SetData(loginResponseDataObj)
 
 	return responseObj
 }
@@ -84,6 +95,16 @@ func (this *StatsParameter) verify() model.ResponseStatus {
 	return model.Success
 }
 
+type StatsResponseData struct {
+	ActiveTime string
+}
+
+func newStatsResponseData(activeTime string) *StatsResponseData {
+	return &StatsResponseData{
+		ActiveTime: activeTime,
+	}
+}
+
 func stats(requestObj *model.RequestObject, clientObj clientmgr.IClient) *model.ResponseObject {
 	var responseObj = model.NewResponseObject()
 	var paramObj = new(StatsParameter)
@@ -100,8 +121,8 @@ func stats(requestObj *model.RequestObject, clientObj clientmgr.IClient) *model.
 	}
 
 	// Get the required value
-	statsStr := paramObj.playerObj.GetActiveTime()
-	responseObj.SetData(statsStr)
+	statsResponseDataObj := newStatsResponseData(paramObj.playerObj.GetActiveTime())
+	responseObj.SetData(statsResponseDataObj)
 
 	return responseObj
 }
