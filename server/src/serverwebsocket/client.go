@@ -7,8 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jordanzuo/goutil/intAndBytesUtil"
-	"github.com/Jordanzuo/goutil/logUtil"
 	"github.com/gorilla/websocket"
 	"interview.com/cloudcade/chat/server/src/clientmgr"
 	"interview.com/cloudcade/chat/server/src/model"
@@ -92,7 +90,7 @@ func (this *Client) SendMessage(responseObj *model.ResponseObject) {
 func (this *Client) sendMessage(responseObj *model.ResponseObject) error {
 	content, _ := json.Marshal(responseObj)
 	contentLength := len(content)
-	header := intAndBytesUtil.Int32ToBytes(int32(contentLength), byterOrder)
+	header := clientmgr.Int32ToBytes(int32(contentLength), byterOrder)
 	message := append(header, content...)
 
 	if err := this.sendMessageToClient(message); err != nil {
@@ -164,7 +162,6 @@ func (this *Client) handleReceiveData() {
 		if len(message) == 0 {
 			err := this.sendMessageToClient([]byte{})
 			if err != nil {
-				logUtil.ErrorLog("sendMessage error:%v", err)
 				break
 			}
 		} else {

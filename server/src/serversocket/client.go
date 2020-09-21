@@ -9,7 +9,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jordanzuo/goutil/intAndBytesUtil"
 	"interview.com/cloudcade/chat/server/src/clientmgr"
 	"interview.com/cloudcade/chat/server/src/model"
 	playerModel "interview.com/cloudcade/chat/server/src/player/model"
@@ -75,7 +74,7 @@ func (this *Client) getReceiveData() (message []byte, exists bool) {
 		return
 	}
 	header := this.receiveData[:conHeaderLength]
-	contentLength := intAndBytesUtil.BytesToInt32(header, byterOrder)
+	contentLength := clientmgr.BytesToInt32(header, byterOrder)
 
 	// If content length is zero, it represents heartbeat package.
 	if contentLength == 0 {
@@ -123,7 +122,7 @@ func (this *Client) SendMessage(responseObj *model.ResponseObject) {
 func (this *Client) sendMessage(responseObj *model.ResponseObject) error {
 	content, _ := json.Marshal(responseObj)
 	contentLength := len(content)
-	header := intAndBytesUtil.Int32ToBytes(int32(contentLength), byterOrder)
+	header := clientmgr.Int32ToBytes(int32(contentLength), byterOrder)
 	message := append(header, content...)
 
 	if err := this.sendMessageToClient(message); err != nil {
