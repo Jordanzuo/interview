@@ -5,13 +5,8 @@ import (
 	"testing"
 )
 
-var (
-	dfaObj *Dfa
-)
-
 func init() {
-	var err error
-	dfaObj, err = NewDfa("../../config/profanity_words.txt")
+	err := Init("../../config/profanity_words.txt")
 	if err != nil {
 		panic(fmt.Sprintf("Init profanity words file failed. Error:%s", err))
 	}
@@ -20,14 +15,14 @@ func init() {
 func TestIsMatch(t *testing.T) {
 	input := "bitch, I don't want to be rude. bitch, Just for test. bitch"
 	expected := true
-	got := dfaObj.IsMatch(input)
+	got := IsMatch(input)
 	if expected != got {
 		t.Errorf("Expected to get %v, but got %v", expected, got)
 	}
 
 	input = "I want to be polite."
 	expected = false
-	got = dfaObj.IsMatch(input)
+	got = IsMatch(input)
 	if expected != got {
 		t.Errorf("Expected to get %v, but got %v", expected, got)
 	}
@@ -36,14 +31,14 @@ func TestIsMatch(t *testing.T) {
 func TestHandleWord(t *testing.T) {
 	input := "bitch, I don't want to be rude. bitch, Just for test. bitch"
 	expected := "*****, I don't want to be rude. *****, Just for test. *****"
-	got := dfaObj.HandleWord(input, '*')
+	got := HandleWord(input, '*')
 	if expected != got {
 		t.Errorf("Expected to get %v, but got %v", expected, got)
 	}
 
 	input = "I want to be polite"
 	expected = "I want to be polite"
-	got = dfaObj.HandleWord(input, '*')
+	got = HandleWord(input, '*')
 	if expected != got {
 		t.Errorf("Expected to get %v, but got %v", expected, got)
 	}
@@ -58,6 +53,6 @@ func BenchmarkIsMatch(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		dfaObj.IsMatch(input)
+		IsMatch(input)
 	}
 }

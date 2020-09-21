@@ -11,15 +11,19 @@ import (
 	"strings"
 )
 
-// Dfa object
-type Dfa struct {
+var (
+	dfaObj *dfa
+)
+
+// dfa object
+type dfa struct {
 	// The root node
 	root *trieNode
 }
 
 // Since go doesn't have tuple type. In order to define extra struct, I use two []int to represent start index and end index pairs.
 // When handling return values from this function, the two list should be used accordingly.
-func (this *Dfa) searcSentence(sentence string) (startIndexList, endIndexList []int) {
+func (this *dfa) searcSentence(sentence string) (startIndexList, endIndexList []int) {
 	// Point current node to the root node and initialize some variables.
 	currNode := this.root
 	start, end, valid := 0, 0, false
@@ -78,8 +82,8 @@ func (this *Dfa) searcSentence(sentence string) (startIndexList, endIndexList []
 	return
 }
 
-// InsertWord ... Insert new word into object
-func (this *Dfa) InsertWord(word []rune) {
+// insert new word into object
+func (this *dfa) insertWord(word []rune) {
 	currNode := this.root
 	for _, c := range word {
 		if cildNode, exist := currNode.children[c]; !exist {
@@ -94,8 +98,8 @@ func (this *Dfa) InsertWord(word []rune) {
 	currNode.isEndOfWord = true
 }
 
-// StartsWith ... Check if there is any word in the trie that starts with the given prefix.
-func (this *Dfa) StartsWith(prefix []rune) bool {
+// Check if there is any word in the trie that starts with the given prefix.
+func (this *dfa) startsWith(prefix []rune) bool {
 	currNode := this.root
 	for _, c := range prefix {
 		if cildNode, exist := currNode.children[c]; !exist {
@@ -108,11 +112,37 @@ func (this *Dfa) StartsWith(prefix []rune) bool {
 	return true
 }
 
+// Init ... Init dfa file and object
+// filePath: The dfa content file path
+// Return values:
+// Error if exists
+func Init(filePath string) (err error) {
+	var dfaContent []byte
+	dfaContent, err = ioutil.ReadFile(filePath)
+	if err != nil {
+		return
+	}
+
+	dfaObj = &dfa{
+		root: newTrieNode(),
+	}
+
+	wordList := strings.Split(string(dfaContent), "\n")
+	for _, word := range wordList {
+		wordRuneList := []rune(word)
+		if len(wordRuneList) > 0 {
+			dfaObj.insertWord(wordRuneList)
+		}
+	}
+
+	return
+}
+
 // IsMatch ... Judge if input sentence contains some special caracter
 // Return:
 // Matc or not
-func (this *Dfa) IsMatch(sentence string) bool {
-	startIndexList, _ := this.searcSentence(sentence)
+func IsMatch(sentence string) bool {
+	startIndexList, _ := dfaObj.searcSentence(sentence)
 	return len(startIndexList) > 0
 }
 
@@ -121,8 +151,8 @@ func (this *Dfa) IsMatch(sentence string) bool {
 // replaceCh: candidate
 // Return:
 // Sentence after manipulation
-func (this *Dfa) HandleWord(sentence string, replaceCh rune) string {
-	startIndexList, endIndexList := this.searcSentence(sentence)
+func HandleWord(sentence string, replaceCh rune) string {
+	startIndexList, endIndexList := dfaObj.searcSentence(sentence)
 	if len(startIndexList) == 0 {
 		return sentence
 	}
@@ -136,31 +166,4 @@ func (this *Dfa) HandleWord(sentence string, replaceCh rune) string {
 	}
 
 	return string(sentenceList)
-}
-
-// NewDfa ... Create new DfaUtil object
-// filePath: The dfa content file path
-// Return values:
-// Dfa object
-// Error if exists
-func NewDfa(filePath string) (dfaObj *Dfa, err error) {
-	var dfaContent []byte
-	dfaContent, err = ioutil.ReadFile(filePath)
-	if err != nil {
-		return
-	}
-
-	dfaObj = &Dfa{
-		root: newTrieNode(),
-	}
-
-	wordList := strings.Split(string(dfaContent), "\n")
-	for _, word := range wordList {
-		wordRuneList := []rune(word)
-		if len(wordRuneList) > 0 {
-			dfaObj.InsertWord(wordRuneList)
-		}
-	}
-
-	return
 }
