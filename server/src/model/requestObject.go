@@ -13,7 +13,8 @@ type RequestObject struct {
 	// Command
 	Command string
 
-	// Request data
+	// Request data. This is a json object. Server will call function ParseParameter to parse this field into a specified object.
+	// And the detailed definition is defined in each endpoint file.
 	Parameter interface{}
 }
 
