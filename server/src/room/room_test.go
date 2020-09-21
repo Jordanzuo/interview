@@ -33,7 +33,7 @@ func TestRoomPlayer(t *testing.T) {
 
 	for i := 1; i <= 100; i++ {
 		playerObj := playerList[i-1]
-		roomObj.ExitRoom(playerObj)
+		roomObj.exitRoom(playerObj)
 		expectedPlayerCount = 100 - i
 		allPlayerList = roomObj.GetAllPlayers()
 		if len(allPlayerList) != expectedPlayerCount {
@@ -55,12 +55,12 @@ func TestRoomMessage(t *testing.T) {
 		return
 	}
 
-	for i := 1; i < 2*con_Max_Message_Count_Per_Room; i++ {
+	for i := 1; i < 2*conMaxMessageCountPerRoom; i++ {
 		roomObj.AppendMessage(playerObj, fmt.Sprintf("Test message_%d", i))
-		if i <= con_Max_Message_History_Count {
+		if i <= conMaxMessageHistoryCount {
 			expectedMessageCount = i
 		} else {
-			expectedMessageCount = con_Max_Message_History_Count
+			expectedMessageCount = conMaxMessageHistoryCount
 		}
 
 		messageHistoryList = roomObj.GetMessageHistory()
@@ -85,7 +85,7 @@ func TestAssignRoom(t *testing.T) {
 	for i := 0; i < 15000; i++ {
 		playerObj := playerModel.NewPlayer(fmt.Sprintf("Player_%d", i))
 		newRoomObj, exists := AssignRoom()
-		if i >= roomCount*con_Max_Player_Count_Per_Room {
+		if i >= roomCount*conMaxPlayerCountPerRoom {
 			if exists {
 				t.Errorf("There should be no available room for new player. But now there is")
 				return
@@ -96,7 +96,7 @@ func TestAssignRoom(t *testing.T) {
 				return
 			}
 
-			expectedRoomID := i / con_Max_Player_Count_Per_Room
+			expectedRoomID := i / conMaxPlayerCountPerRoom
 			if newRoomObj.ID != expectedRoomID {
 				t.Errorf("Expected to get a room with ID:%d. But now it's %d", expectedRoomID, newRoomObj.ID)
 				return
