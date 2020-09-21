@@ -13,7 +13,7 @@ func init() {
 func clearExpiredClient() {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("[%s]Goroutine: clearExpiredClient encounters some error: %v", serverModuleName, r)
+			fmt.Printf("[%s]Goroutine: clearExpiredClient encounters some error: %v", serverModuleName, r)
 		}
 	}()
 

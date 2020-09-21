@@ -18,6 +18,7 @@ func pushToPlayer(playerObj *playerModel.Player, responseObj *model.ResponseObje
 	clientObj.SendMessage(responseObj)
 }
 
+// PushMessageToPlayer ... Push message to specified player object
 func PushMessageToPlayer(playerObj *playerModel.Player, pushKey string, message interface{}) {
 	sendResponseObj := model.NewResponseObject()
 	sendResponseObj.SetPushKey(pushKey)
@@ -26,6 +27,7 @@ func PushMessageToPlayer(playerObj *playerModel.Player, pushKey string, message 
 	pushToPlayer(playerObj, sendResponseObj)
 }
 
+// PushMessageToPlayerList ... Push message to a group of player object
 func PushMessageToPlayerList(playerList []*playerModel.Player, pushKey string, message interface{}) {
 	sendResponseObj := model.NewResponseObject()
 	sendResponseObj.SetPushKey(pushKey)
