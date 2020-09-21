@@ -13,12 +13,25 @@ func init() {
 
 type SendMessageParameter struct {
 	Message string
+	roomObj *Room
 }
 
-func (this *SendMessageParameter) verify() model.ResponseStatus {
+func (this *SendMessageParameter) verify(playerObj *playerModel.Player) model.ResponseStatus {
 	if this.Message == "" {
 		return model.MessageIsEmpty
 	}
+
+	roomID := playerObj.RoomID
+	if roomID == 0 {
+		return model.PlayerNotInRoom
+	}
+
+	var exists bool
+	this.roomObj, exists = getRoom(roomID)
+	if !exists {
+		return model.PlayerNotInValidRoom
+	}
+
 	return model.Success
 }
 
@@ -37,23 +50,13 @@ func sendMessage(requestObj *model.RequestObject, clientObj clientmgr.IClient, p
 		return responseObj.SetResponseStatus(rs)
 	}
 
-	roomID := playerObj.RoomID
-	if roomID == 0 {
-		return responseObj.SetResponseStatus(model.PlayerNotInRoom)
-	}
-
-	roomObj, exists := getRoom(roomID)
-	if !exists {
-		return responseObj.SetResponseStatus(model.PlayerNotInValidRoom)
-	}
-
-	roomObj.AppendMessage(playerObj, paramObj.Message)
+	paramObj.roomObj.AppendMessage(playerObj, paramObj.Message)
 
 	// Send message to popular
 	popular.AddMessage(paramObj.Message)
 
 	// Push message to all the players in the same room
-	playerList := roomObj.GetAllPlayers()
+	playerList := paramObj.roomObj.GetAllPlayers()
 	clientmgr.PushMessageToPlayerList(playerList, model.SendMessage, newRoomMessage(playerObj.Name, paramObj.Message))
 
 	return responseObj

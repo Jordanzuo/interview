@@ -1,7 +1,8 @@
 package room
 
 var (
-	roomList []*Room
+	serverModuleName = "room"
+	roomList         []*Room
 )
 
 // Init ... Init specified number of room. This can prevent data race condition related room.

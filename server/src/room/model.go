@@ -7,18 +7,19 @@ import (
 )
 
 const (
-	con_Max_Player_Count_Per_Room  = 100
-	con_Max_Message_Count_Per_Room = 100
-	con_Max_Message_History_Count  = 50
+	conMaxPlayerCountPerRoom  = 100
+	conMaxMessageCountPerRoom = 100
+	conMaxMessageHistoryCount = 50
 )
 
-type RoomMessage struct {
+// Message ... The message in a room
+type Message struct {
 	PlayerName string
 	Message    string
 }
 
-func newRoomMessage(playerName, message string) *RoomMessage {
-	return &RoomMessage{
+func newRoomMessage(playerName, message string) *Message {
+	return &Message{
 		PlayerName: playerName,
 		Message:    message,
 	}
@@ -34,7 +35,7 @@ type Room struct {
 	playerRWMutex sync.RWMutex
 
 	// All the message history
-	messageList    []*RoomMessage
+	messageList    []*Message
 	messageRWMutex sync.RWMutex
 }
 
@@ -45,7 +46,7 @@ func (this *Room) JoinRoom(playerObj *playerModel.Player) {
 	playerObj.JoinRoom(this.ID)
 }
 
-func (this *Room) ExitRoom(playerObj *playerModel.Player) {
+func (this *Room) exitRoom(playerObj *playerModel.Player) {
 	this.playerRWMutex.Lock()
 	defer this.playerRWMutex.Unlock()
 	delete(this.playerMap, playerObj.ID)
@@ -70,7 +71,7 @@ func (this *Room) getPlayerCount() int {
 }
 
 func (this *Room) isFull() bool {
-	return this.getPlayerCount() >= con_Max_Player_Count_Per_Room
+	return this.getPlayerCount() >= conMaxPlayerCountPerRoom
 }
 
 func (this *Room) AppendMessage(playerObj *playerModel.Player, message string) {
@@ -82,22 +83,22 @@ func (this *Room) AppendMessage(playerObj *playerModel.Player, message string) {
 
 	// Check if the message's count has exceeded a certain number?
 	// If so, just leave the last con_Max_Message_History_Count messages.
-	if len(this.messageList) > con_Max_Message_Count_Per_Room {
-		this.messageList = this.messageList[len(this.messageList)-con_Max_Message_History_Count:]
+	if len(this.messageList) > conMaxMessageCountPerRoom {
+		this.messageList = this.messageList[len(this.messageList)-conMaxMessageHistoryCount:]
 	}
 }
 
-func (this *Room) GetMessageHistory() []*RoomMessage {
+func (this *Room) GetMessageHistory() []*Message {
 	this.messageRWMutex.RLock()
 	defer this.messageRWMutex.RUnlock()
 
-	retMessageList := make([]*RoomMessage, 0, con_Max_Message_History_Count)
-	if len(this.messageList) < con_Max_Message_History_Count {
+	retMessageList := make([]*Message, 0, conMaxMessageHistoryCount)
+	if len(this.messageList) < conMaxMessageHistoryCount {
 		for _, v := range this.messageList {
 			retMessageList = append(retMessageList, v)
 		}
 	} else {
-		for _, v := range this.messageList[len(this.messageList)-con_Max_Message_History_Count:] {
+		for _, v := range this.messageList[len(this.messageList)-conMaxMessageHistoryCount:] {
 			retMessageList = append(retMessageList, v)
 		}
 	}
@@ -109,6 +110,6 @@ func newRoom(id int) *Room {
 	return &Room{
 		ID:          id,
 		playerMap:   make(map[int]*playerModel.Player, 64),
-		messageList: make([]*RoomMessage, 0, 64),
+		messageList: make([]*Message, 0, 64),
 	}
 }
