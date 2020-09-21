@@ -45,7 +45,7 @@ func sendMessage(requestObj *model.RequestObject, clientObj clientmgr.IClient, p
 		return responseObj.SetResponseStatus(rs)
 	}
 
-	rs = paramObj.verify()
+	rs = paramObj.verify(playerObj)
 	if rs != model.Success {
 		return responseObj.SetResponseStatus(rs)
 	}
