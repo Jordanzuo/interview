@@ -1,10 +1,7 @@
-package dfa
-
 /*
-DFA util, is used to verify whether a sentence has invalid words.
-The underlying data structure is trie.
-https://en.wikipedia.org/wiki/Trie
+See Profanity Filter design.md for more information
 */
+package dfa
 
 import (
 	"io/ioutil"
