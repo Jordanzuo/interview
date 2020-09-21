@@ -1,0 +1,4 @@
+{
+    "ListenAddr": ":10001",
+    "RoomCount": 100
+}
