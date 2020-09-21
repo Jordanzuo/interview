@@ -1,4 +1,5 @@
 {
-    "ListenAddr": ":10001",
+    "SocketServerListenAddr": ":10001",
+    "WebSocketServerListenAddr": ":10002",
     "RoomCount": 100
 }

@@ -10,16 +10,23 @@ func Test(t *testing.T) {
 		panic(err)
 	}
 
-	configObj := getConfig()
+	configObj := GetConfig()
 	if configObj == nil {
 		t.Errorf("There should be an non-empty config object. But now there is.")
 		return
 	}
 
-	expectedListenAddr := ":10001"
-	gotListenAddr := configObj.ListenAddr
-	if expectedListenAddr != gotListenAddr {
-		t.Errorf("ListenAddr: Expected to get %s, but now got %s.", expectedListenAddr, gotListenAddr)
+	expectedSocketServerListenAddr := ":10001"
+	gotSocketServerListenAddr := configObj.SocketServerListenAddr
+	if expectedSocketServerListenAddr != gotSocketServerListenAddr {
+		t.Errorf("SocketServerListenAddr: Expected to get %s, but now got %s.", expectedListenAddr, gotListenAddr)
+		return
+	}
+
+	expectedWebSocketServerListenAddr := ":10002"
+	gotWebSocketServerListenAddr := configObj.WebSocketServerListenAddr
+	if expectedWebSocketServerListenAddr != gotWebSocketServerListenAddr {
+		t.Errorf("WebSocketServerListenAddr: Expected to get %s, but now got %s.", expectedListenAddr, gotListenAddr)
 		return
 	}
 

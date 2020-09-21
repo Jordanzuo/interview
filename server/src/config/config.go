@@ -29,6 +29,6 @@ func Init(configFilePath string) error {
 	return nil
 }
 
-func getConfig() *Config {
+func GetConfig() *Config {
 	return configObj
 }
