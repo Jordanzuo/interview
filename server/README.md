@@ -41,3 +41,6 @@ type ResponseObject struct {
 	// Push key, used by server to push messages to client actively
 	PushKey string
 }
+
+# Test
+run bash test/test.sh to do the unit test
