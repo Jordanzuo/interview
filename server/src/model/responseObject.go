@@ -4,21 +4,21 @@ import (
 	"time"
 )
 
-// ResponseObject ... 服务器的响应对象
+// ResponseObject ... Server's response object
 type ResponseObject struct {
-	// 响应结果的状态值
+	// Response status to client
 	ResponseStatus
 
-	// 响应结果的数据
+	// Reponse data
 	Data interface{}
 
-	// 客户端请求唯一标识
+	// Client's request distinct id
 	RequestID int64
 
-	// 时间戳
+	// Timestamp
 	TimeTick int64
 
-	// 推送Key,用于主动推送的数据
+	// Push key, used by server to push messages to client actively
 	PushKey string
 }
 

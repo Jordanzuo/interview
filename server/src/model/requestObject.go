@@ -17,7 +17,7 @@ type RequestObject struct {
 	Parameter interface{}
 }
 
-// ParseParameter: Parse parameter to a specified object
+// ParseParameter ... Parse parameter to a specified object
 func (this *RequestObject) ParseParameter(obj interface{}) ResponseStatus {
 	bytes, err := json.Marshal(this.Parameter)
 	if err != nil {

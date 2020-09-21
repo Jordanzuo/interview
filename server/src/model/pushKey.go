@@ -1,6 +1,6 @@
 package model
 
-// 定义所有的服务器主动推送给客户端的key的枚举值
+// Define all the push keys that server uses to send messages to client activly
 const (
 	LoginOnAnotherDevice = "LoginOnAnotherDevice"
 	SendMessage          = "SendMessage"
