@@ -55,7 +55,7 @@ func TestPopular(t *testing.T) {
 	}
 
 	// Wait for 5 seconds to let the old messages expire
-	time.Sleep(con_Message_Max_Valid_Seconds * time.Second)
+	time.Sleep(conMessageMaxValidSeconds * time.Second)
 
 	// Test after all the old messages are expired and add a new message.
 	AddMessage("This is a new message which contains duplicate message.")

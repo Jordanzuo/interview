@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	con_Message_Max_Valid_Seconds = 5
+	conMessageMaxValidSeconds = 5
 )
 
 var (
@@ -65,7 +65,7 @@ func (this *Message) tokenize() (tokens []string) {
 }
 
 func (this *Message) expired() bool {
-	return this.SendTime < time.Now().Unix()-con_Message_Max_Valid_Seconds
+	return this.SendTime < time.Now().Unix()-conMessageMaxValidSeconds
 }
 
 func newMessage(content string) *Message {
