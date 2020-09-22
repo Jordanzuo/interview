@@ -9,7 +9,7 @@ var (
 func Init(roomCount int) {
 	roomList = make([]*Room, roomCount, roomCount)
 	for i := 0; i < roomCount; i++ {
-		roomList[i] = newRoom(i)
+		roomList[i] = newRoom(i + 1)
 	}
 }
 
@@ -18,11 +18,11 @@ func getRoomCount() int {
 }
 
 func getRoom(id int) (roomObj *Room, exists bool) {
-	if id < 0 || id > len(roomList)-1 {
+	if id < 1 || id > len(roomList) {
 		return
 	}
 
-	roomObj = roomList[id]
+	roomObj = roomList[id-1]
 	exists = true
 
 	return

@@ -6,6 +6,8 @@ import (
 
 	"interview.com/cloudcade/chat/server/src/config"
 	"interview.com/cloudcade/chat/server/src/dfa"
+	_ "interview.com/cloudcade/chat/server/src/player"
+	"interview.com/cloudcade/chat/server/src/popular"
 	"interview.com/cloudcade/chat/server/src/room"
 	"interview.com/cloudcade/chat/server/src/serversocket"
 	"interview.com/cloudcade/chat/server/src/serverwebsocket"
@@ -37,6 +39,9 @@ func main() {
 	// Init room data
 	configObj := config.GetConfig()
 	room.Init(configObj.RoomCount)
+
+	// Init popular logic
+	popular.Init()
 
 	// Start socket server
 	go serversocket.Start(&wg, configObj.SocketServerListenAddr)

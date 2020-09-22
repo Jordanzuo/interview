@@ -46,6 +46,7 @@ type Player struct {
 
 func (this *Player) ClientLogin(clientID int64) {
 	this.ClientID = clientID
+	this.LoginTime = time.Now().Unix()
 }
 
 func (this *Player) ClientLogout() {
@@ -55,6 +56,7 @@ func (this *Player) ClientLogout() {
 
 func (this *Player) JoinRoom(roomID int) {
 	this.RoomID = roomID
+	fmt.Printf("%s joins room:%d\n", this.Name, roomID)
 }
 
 func (this *Player) UpdateActiveTime(activeTime int64) {

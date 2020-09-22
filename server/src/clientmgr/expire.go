@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	conClientExpireSeconds int64 = 30
+	conClientExpireSeconds int64 = 300
 )
 
 func init() {

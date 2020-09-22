@@ -1,6 +1,10 @@
 package room
 
 import (
+	"fmt"
+
+	"interview.com/cloudcade/chat/server/src/dfa"
+
 	"interview.com/cloudcade/chat/server/src/clientmgr"
 	"interview.com/cloudcade/chat/server/src/model"
 	playerModel "interview.com/cloudcade/chat/server/src/player/model"
@@ -31,6 +35,8 @@ func (this *SendMessageParameter) verify(playerObj *playerModel.Player) model.Re
 	if !exists {
 		return model.PlayerNotInValidRoom
 	}
+
+	this.Message = dfa.HandleWord(this.Message, '*')
 
 	return model.Success
 }
@@ -69,6 +75,7 @@ func sendMessage(requestObj *model.RequestObject, clientObj clientmgr.IClient, p
 
 	// Push message to all the players in the same room
 	playerList := paramObj.roomObj.GetAllPlayers()
+	fmt.Printf("There are %d players in room:%d\n", len(playerList), paramObj.roomObj.ID)
 	sendMessageResponseDataObj := newSendMessageResponseData(playerObj.Name, paramObj.Message)
 	clientmgr.PushMessageToPlayerList(playerList, model.SendMessage, sendMessageResponseDataObj)
 
