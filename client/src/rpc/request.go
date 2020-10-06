@@ -28,6 +28,10 @@ func request(requestObj *model.RequestObject, callback func(interface{})) {
 	requestCallbackMap[requestObj.RequestID] = callback
 }
 
+func sendHeartBeat() {
+	clientObj.sendByteMessage([]byte{})
+}
+
 func getCallback(requestID int64) (callback func(interface{}), exists bool) {
 	requetCallbackMutex.Lock()
 	defer requetCallbackMutex.Unlock()

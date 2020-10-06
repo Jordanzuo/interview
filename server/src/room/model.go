@@ -8,8 +8,8 @@ import (
 
 const (
 	conMaxPlayerCountPerRoom  = 100
-	conMaxMessageCountPerRoom = 100
-	conMaxMessageHistoryCount = 50
+	conMaxMessageCountPerRoom = 10
+	conMaxMessageHistoryCount = 5
 )
 
 // Message ... The message in a room
@@ -36,6 +36,7 @@ type Room struct {
 
 	// All the message history
 	messageList    []*Message
+	messageIndex   int
 	messageRWMutex sync.RWMutex
 }
 
@@ -79,13 +80,8 @@ func (this *Room) AppendMessage(playerObj *playerModel.Player, message string) {
 
 	this.messageRWMutex.Lock()
 	defer this.messageRWMutex.Unlock()
-	this.messageList = append(this.messageList, messageObj)
-
-	// Check if the message's count has exceeded a certain number?
-	// If so, just leave the last con_Max_Message_History_Count messages.
-	if len(this.messageList) > conMaxMessageCountPerRoom {
-		this.messageList = this.messageList[len(this.messageList)-conMaxMessageHistoryCount:]
-	}
+	this.messageList[this.messageIndex%conMaxMessageCountPerRoom] = messageObj
+	this.messageIndex++
 }
 
 func (this *Room) GetMessageHistory() []*Message {
@@ -93,13 +89,12 @@ func (this *Room) GetMessageHistory() []*Message {
 	defer this.messageRWMutex.RUnlock()
 
 	retMessageList := make([]*Message, 0, conMaxMessageHistoryCount)
-	if len(this.messageList) < conMaxMessageHistoryCount {
-		for _, v := range this.messageList {
-			retMessageList = append(retMessageList, v)
-		}
-	} else {
-		for _, v := range this.messageList[len(this.messageList)-conMaxMessageHistoryCount:] {
-			retMessageList = append(retMessageList, v)
+	count := 0
+	for index := this.messageIndex - 1; index >= 0; index-- {
+		retMessageList = append(retMessageList, this.messageList[index%conMaxMessageCountPerRoom])
+		count++
+		if count >= conMaxMessageHistoryCount {
+			break
 		}
 	}
 
@@ -108,8 +103,9 @@ func (this *Room) GetMessageHistory() []*Message {
 
 func newRoom(id int) *Room {
 	return &Room{
-		ID:          id,
-		playerMap:   make(map[int]*playerModel.Player, 64),
-		messageList: make([]*Message, 0, 64),
+		ID:           id,
+		playerMap:    make(map[int]*playerModel.Player, 64),
+		messageList:  make([]*Message, conMaxMessageCountPerRoom, conMaxMessageCountPerRoom),
+		messageIndex: 0,
 	}
 }

@@ -38,7 +38,7 @@ func Interact(ch chan int) {
 		requestObj, callback, err := constructRequestObject(input)
 		if err != nil {
 			fmt.Println(err)
-			return
+			continue
 		}
 		request(requestObj, callback)
 	}
